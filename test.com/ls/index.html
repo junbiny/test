@@ -1,0 +1,91 @@
+<html>  
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>test</title>
+	</head>
+<head>  
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>  
+<script type="text/javascript">  
+	$(function() {  
+		$("#subbtn").click(function() {
+			var inputcode = $("#idCode").val();
+			var params = $("input").serialize();  
+			var url = "demo2.php"; 
+			
+			//判断验证码是否正确！
+			$.ajax({
+				type:"post",
+				url:"ls/checkCaptcha.php",
+				dataType: "json",
+				data:params,
+				success:function(res){
+					if (res.status == '0'){
+						alert(res.msg);
+						$("#idCode").val('').focus(); //清空并获得焦点
+						
+						var path = '/ls/captcha.php?a=' + parseInt(100*Math.random());
+						$("#img").attr('src',path); //修改img的src值
+					} else {
+						$.ajax({  
+							type: "post",  
+							url: url,  
+							dataType: "json",  
+							data: params,  
+							success: function(msg){  
+								var backdata = "您提交的姓名为：" + msg.name + "<br /> 您提交的密码为：" + msg.password;
+								$("#backdata").html(backdata);  
+								$("#backdata").css({color: "green"});  
+							}  
+						});
+					}
+				}
+			});
+			
+			
+			/* $.ajax({  
+				type: "post",  
+				url: url,  
+				dataType: "json",  
+				data: params,  
+				success: function(msg){  
+					var backdata = "您提交的姓名为：" + msg.name + "<br /> 您提交的密码为：" + msg.password;
+					$("#backdata").html(backdata);  
+					$("#backdata").css({color: "green"});  
+				}  
+			}); */  
+		}); 
+	});
+</script>
+
+<script type="text/javascript">
+	$(function() {
+		$("#changeCode").click(function() {
+			var path = '/ls/captcha.php?a=' + parseInt(1000*Math.random());
+			$("#img").attr('src',path); /* 修改img的src值 */
+		});
+	});
+</script>
+</head>  
+<body>  
+	<p>
+		<label for="name">姓名：</label>  
+		<input id="name" name="name" type="text" />  
+	</p>  
+	  
+	<p>
+		<label for="password">密码：</label>  
+		<input id="password" name="password" type="password" />  
+	</p>  
+	
+	<p>
+		<label>验证码:
+        	<input id="idCode" name="idcode" type="text" value="" />
+        </label>
+        <img src="/ls/captcha.php" alt="" width="88" height="38" id="img">
+        <a href="javascript:void(0);" id="changeCode">看不清楚，点击更换</a>
+	</p> 
+	  
+	<p><input id="subbtn" type="button" value="提交数据" /></p>
+	<span id="backdata"></span> 
+</body>  
+</html>  

@@ -1,0 +1,41 @@
+<html>
+<head>
+	<title>TEST</title>
+<script language="javascript" src="../jquery-1.9.1/jquery.min.js"></script>   
+<script language="javascript">   
+    $(function(){
+        /*setInterval(function(){   
+            $("#currentTime").text(new Date().toLocaleString());   
+        },1000);*/
+
+        setInterval("getTimes()", 1000);
+    }); 
+
+    function getTimes() {
+    	var week, day, now;
+        now = new Date();
+        day = new Array("周日", "周一", "周二", "周三", "周四", "周五", "周六");  
+        week = day[now.getDay()];
+
+    	var times = new Date().toLocaleString();
+    	var str_times = times.substr(0,8) + ' ' + week + times.substr(8);
+    	
+    	$("#currentTime").text(str_times);
+    }
+</script> 
+</head>
+<body>
+	<div id="currentTime">0000/00/00 00：00：00</div>
+	<div>
+		Date: <input type="date" name="user_date" />
+	</div>
+	<div>
+		Email: <input type="email" name="h5-email" />
+	</div>
+	<div>
+		Url: <input type="url" name="h5-url" />
+	</div>
+	
+	
+</body>
+</html>
